@@ -1,43 +1,58 @@
 using UnityEngine;
-/// <summary>
-/// 自動でランダムな方向に移動するキャラクタークラス
-/// </summary>
+
 public class AutoCharacter : CharacterBase
 {
-    [SerializeField, Header("方向が変わる時間")]
-    private float changeInterval = 2f;
+    [SerializeField, Header("自動反転を有効にするか（☑️ = 方向転換あり, ◻️ = 一方向のみ）")]
+    private bool _enableAutoReverse = true;
 
-    private float timer = 0f;
+    [SerializeField, Header("移動方法（☑️ = タテ, ◻️ = ヨコ）")]
+    private bool _isVertical = true;
+
+    [SerializeField, Header("進み方（☑️ = 正方向, ◻️ = 逆方向）")]
+    private bool _isPositiveDirection = true;
+
+    [SerializeField, Header("方向転換の周期（秒）")]
+    private float _directionChangeInterval = 2f;
+
+    private float _directionChangeTimer = 0f;
 
     protected override void Start()
     {
         base.Start();
-        SetRandomDirection();
+
+        // 自動反転する場合だけタイマーを初期化
+        if (_enableAutoReverse)
+        {
+            _directionChangeTimer = _directionChangeInterval / 2f;
+        }
     }
+
     protected override void Move()
     {
-        timer += Time.deltaTime;
-        Debug.Log(timer);
-        if (changeInterval < timer)
+        // 方向転換処理
+        if (_enableAutoReverse)
         {
-            SetRandomDirection();
-            timer = 0f;
+            _directionChangeTimer += Time.deltaTime;
+            if (_directionChangeTimer >= _directionChangeInterval)
+            {
+                _isPositiveDirection = !_isPositiveDirection;
+                _directionChangeTimer = 0f;
+            }
         }
 
-        transform.Translate(moveDirection * moveSpeed_ * Time.deltaTime);
-    }
+        // 移動方向の設定
+        float direction = _isPositiveDirection ? 1f : -1f;
 
-    // ランダムに上下左右の方向を洗濯して設定
-    public void SetRandomDirection()
-    {
-        int randomDirction = Random.Range(0, 4);
-        moveDirection = randomDirction switch
+        if (_isVertical)
         {
-            0 => Vector2.up,
-            1 => Vector2.down,
-            2 => Vector2.left,
-            3 => Vector2.right,
-            _ => Vector2.zero
-        };
+            _moveDirection = Vector2.up * direction;
+        }
+        else
+        {
+            _moveDirection = Vector2.right * direction;
+        }
+
+        // 移動処理
+        transform.Translate(_moveDirection * _moveSpeed * Time.deltaTime);
     }
 }

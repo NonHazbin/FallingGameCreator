@@ -216,13 +216,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 80970236}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: baf278c0ea3364def951dc4c08e83d53, type: 3}
+  m_Script: {fileID: 11500000, guid: 169a9056ec5494310a579613f15f3629, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed_: 20
   defaultSprite: {fileID: 0}
-  wasdControl: 0
-  arrowControl: 0
+  changeInterval: 0.1
 --- !u!1 &1385776088
 GameObject:
   m_ObjectHideFlags: 0

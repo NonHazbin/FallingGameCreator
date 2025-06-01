@@ -8,28 +8,28 @@ using UnityEngine.Scripting.APIUpdating;
 public abstract class CharacterBase : MonoBehaviour
 {
     [SerializeField,Header("スピード（動きの速さ）")]
-    protected float moveSpeed_ = 20f;
+    protected float _moveSpeed = 20f;
 
     [SerializeField, Header("キャラクター写真")]
-    protected Sprite defaultSprite; // 任意の画像をInspectorで設定
-    protected SpriteRenderer characterSprite; //スプライト表示用のコンポーネント
-    protected Vector2 moveDirection; //移動方向
-    protected Collider2D characterCollider; //当たり判定
+    protected Sprite _defaultSprite; // 任意の画像をInspectorで設定
+    protected SpriteRenderer _characterSprite; //スプライト表示用のコンポーネント
+    protected Vector2 _moveDirection; //移動方向
+    protected Collider2D _characterCollider; //当たり判定
 
     protected virtual void Start()
     {
-        characterSprite = GetComponent<SpriteRenderer>();
-        if (characterSprite == null)
+        _characterSprite = GetComponent<SpriteRenderer>();
+        if (_characterSprite == null)
         {
-            characterSprite = gameObject.AddComponent<SpriteRenderer>();
+            _characterSprite = gameObject.AddComponent<SpriteRenderer>();
         }
 
-        if (defaultSprite != null)
+        if (_defaultSprite != null)
         {
-            characterSprite.sprite = defaultSprite;
+            _characterSprite.sprite = _defaultSprite;
         }
 
-        characterCollider = GetComponent<Collider2D>();
+        _characterCollider = GetComponent<Collider2D>();
     }
 
     protected virtual void Update()
@@ -41,9 +41,9 @@ public abstract class CharacterBase : MonoBehaviour
 
     public void SetSprite(Sprite newSprite_)
     {
-        if (characterSprite != null && newSprite_ != null)
+        if (_characterSprite != null && newSprite_ != null)
         {
-            characterSprite.sprite = newSprite_;
+            _characterSprite.sprite = newSprite_;
         }
     }
 }

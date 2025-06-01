@@ -4,9 +4,9 @@ using UnityEngine.InputSystem;
 public class PlayerCharacter : CharacterBase
 {
     [SerializeField, Header("WASDキーでのそうさ")]
-    private bool wasdControl = false;
+    private bool _wasdControl = false;
     [SerializeField, Header("矢印キーでのそうさ")]
-    private bool arrowControl = false;
+    private bool _arrowControl = false;
     protected override void Move()
     {
         float horizontal = 0f;
@@ -14,7 +14,7 @@ public class PlayerCharacter : CharacterBase
 
         if (Keyboard.current != null)
         {
-            if (wasdControl)
+            if (_wasdControl)
             {
                 if (Keyboard.current.wKey.isPressed)
                 {
@@ -33,7 +33,7 @@ public class PlayerCharacter : CharacterBase
                     horizontal += 1;
                 }
             }
-            if (arrowControl)
+            if (_arrowControl)
             {
                 if (Keyboard.current.upArrowKey.isPressed)
                 {
@@ -54,7 +54,7 @@ public class PlayerCharacter : CharacterBase
             }
         }
 
-        moveDirection = new Vector2(horizontal, vertical).normalized;
-        transform.Translate(moveDirection * moveSpeed_ * Time.deltaTime);
+        _moveDirection = new Vector2(horizontal, vertical).normalized;
+        transform.Translate(_moveDirection * _moveSpeed * Time.deltaTime);
     }
 }
