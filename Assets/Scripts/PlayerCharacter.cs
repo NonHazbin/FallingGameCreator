@@ -3,10 +3,19 @@ using UnityEngine.InputSystem;
 
 public class PlayerCharacter : CharacterBase
 {
+        private enum MoveDirectionType
+    {
+        Both,
+        HorizontalOnly,
+        VerticalOnly
+    }
     [SerializeField, Header("WASDキーでのそうさ")]
     private bool _wasdControl = false;
     [SerializeField, Header("矢印キーでのそうさ")]
     private bool _arrowControl = false;
+
+    [SerializeField, Header("移動可能方向の設定")]
+    private MoveDirectionType _moveDirectionType = MoveDirectionType.Both;
     protected override void Move()
     {
         float horizontal = 0f;
@@ -52,6 +61,18 @@ public class PlayerCharacter : CharacterBase
                     horizontal += 1;
                 }
             }
+        }
+        // 移動方向の制限
+        switch (_moveDirectionType)
+        {
+            case MoveDirectionType.HorizontalOnly:
+                vertical = 0;
+                break;
+            case MoveDirectionType.VerticalOnly:
+                horizontal = 0;
+                break;
+            case MoveDirectionType.Both:
+                break;
         }
 
         _moveDirection = new Vector2(horizontal, vertical).normalized;

@@ -7,7 +7,7 @@ using UnityEngine.Scripting.APIUpdating;
 /// </summary>
 public abstract class CharacterBase : MonoBehaviour
 {
-    [SerializeField,Header("スピード（動きの速さ）")]
+    [SerializeField, Header("スピード（動きの速さ）")]
     protected float _moveSpeed = 20f;
 
     [SerializeField, Header("キャラクター写真")]
@@ -35,6 +35,7 @@ public abstract class CharacterBase : MonoBehaviour
     protected virtual void Update()
     {
         Move();
+        CheckOutOfCameraBounds();
     }
 
     protected abstract void Move();
@@ -44,6 +45,19 @@ public abstract class CharacterBase : MonoBehaviour
         if (_characterSprite != null && newSprite_ != null)
         {
             _characterSprite.sprite = newSprite_;
+        }
+    }
+    /// <summary>
+    /// カメラの外に出たら自動的に削除
+    /// </summary>
+    protected void CheckOutOfCameraBounds()
+    {
+        if (Camera.main == null) return;
+
+        Vector3 viewportPos = Camera.main.WorldToViewportPoint(transform.position);
+        if (viewportPos.x < 0 || viewportPos.x > 1 || viewportPos.y < 0 || viewportPos.y > 1)
+        {
+            Destroy(gameObject);
         }
     }
 }
