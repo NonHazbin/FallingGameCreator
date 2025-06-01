@@ -17,7 +17,6 @@ public class randomharacter : CharacterBase
     protected override void Move()
     {
         timer += Time.deltaTime;
-        Debug.Log(timer);
         if (changeInterval < timer)
         {
             SetRandomDirection();

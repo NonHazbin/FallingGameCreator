@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerCharacter : CharacterBase
 {
-        private enum MoveDirectionType
+    private enum MoveDirectionType
     {
         Both,
         HorizontalOnly,
