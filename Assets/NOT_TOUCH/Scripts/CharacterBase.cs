@@ -108,26 +108,34 @@ public abstract class CharacterBase : MonoBehaviour
     /// </summary>
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
-        //Debug.Log($"{gameObject.name} が {other.gameObject.name} と接触しました");
-
-        switch (_individuality.ChangeType)
+        // 衝突相手がCharacterBaseを持っているか確認
+        CharacterBase otherCharacter = other.GetComponent<CharacterBase>();
+        if (otherCharacter != null)
         {
-            case ChangeAddType.Timer:
-                HandleTimerEffect();
-                break;
+            // 衝突相手の属性がPlayerなら、自身の効果を発動
+            if (otherCharacter._individuality.ChangeType == ChangeAddType.Player)
+            {
+                switch (_individuality.ChangeType)
+                {
+                    case ChangeAddType.Timer:
+                        HandleTimerEffect();
+                        break;
 
-            case ChangeAddType.Point:
-                HandlePointEffect();
-                break;
+                    case ChangeAddType.Point:
+                        HandlePointEffect();
+                        break;
 
-            case ChangeAddType.Both:
-                HandleTimerEffect();
-                HandlePointEffect();
-                break;
+                    case ChangeAddType.Both:
+                        HandleTimerEffect();
+                        HandlePointEffect();
+                        break;
 
-            case ChangeAddType.Player:
-                Debug.Log("プレイヤー属性なので、衝突処理は行いません");
-                break;
+                    case ChangeAddType.Player:
+                        // 自分もPlayer属性なら何もしないなど、必要に応じて分岐可能
+                        Debug.Log("自分もPlayer属性なので、処理スキップ");
+                        break;
+                }
+            }
         }
     }
 
@@ -138,6 +146,7 @@ public abstract class CharacterBase : MonoBehaviour
     protected virtual void HandleTimerEffect()
     {
         Debug.Log($"Timer属性: {_individuality.ChangeTimer}秒の効果を発動（ここに処理を追加）");
+        Destroy(this.gameObject);
         // 必要に応じて Coroutine や Invoke を使う
     }
 
@@ -147,6 +156,7 @@ public abstract class CharacterBase : MonoBehaviour
     protected virtual void HandlePointEffect()
     {
         Debug.Log($"Point属性: {_individuality.ChangePoints}点を加算（ここに処理を追加）");
+        Destroy(this.gameObject);
         // 例: GameManager.Instance.AddScore(_individuality.ChangePoints);
     }
 }
